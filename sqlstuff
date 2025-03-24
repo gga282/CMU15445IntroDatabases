@@ -1,0 +1,39 @@
+Q2 [20 points]
+Find all successful coaches who have won at least one medal. List them in descending order by medal number, then by name alphabetically.
+
+File: q2_successful_coaches
+
+Details: A medal is credited to a coach if it shares the same country and discipline with the coach, regardless of the gender or event. Consider to use winner_code of one medal to decide its country.
+
+Your output should look like this:
+COACH_NAME|MEDAL_NUMBER
+Your first row should look like this:
+
+BRECKENRIDGE Grant|9
+--------------------------------------
+
+SELECT ch.name AS COACH_NAME,COUNT(*) AS MEDAL_NUMBER
+FROM medals m
+JOIN athletes a ON m.winner_code = a.code
+JOIN coaches ch 
+ON a.country_code = ch.country_code
+AND m.discipline = ch.discipline
+GROUP BY ch.name
+ORDER BY MEDAL_NUMBER DESC, COACH_NAME ASC;
+
+-------------------------------------------
+Q3 [20 points]
+Find all athletes in Judo discipline, and also list the number of medals they have won. Sort output in descending order by medal number first, then by name alphabetically.
+
+File: q3_Judo_athlete_medals
+
+Details: The medals counted do not have to be from the Judo discipline, and also be sure to include any medals won as part of a team. If an athlete doesn't appear in the athletes table, please ignore him/her. Assume that if a team participates in a competition, all team members are competing.
+ps: my answer is giving all athletes who won medal from Judo disciplines.
+-------------------------------------------
+SELECT a.name AS ATHLETE_NAME,
+       COUNT(*) AS MEDAL_NUMBER
+FROM athletes a
+JOIN medals m ON a.code = m.winner_code
+WHERE a.disciplines LIKE  '%Judo%'
+GROUP BY a.name
+ORDER BY MEDAL_NUMBER DESC, ATHLETE_NAME ASC;
