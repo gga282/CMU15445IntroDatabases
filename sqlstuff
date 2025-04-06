@@ -37,3 +37,28 @@ JOIN medals m ON a.code = m.winner_code
 WHERE a.disciplines LIKE  '%Judo%'
 GROUP BY a.name
 ORDER BY MEDAL_NUMBER DESC, ATHLETE_NAME ASC;
+
+-------------------------------------------
+Q4
+For all venues that have hosted Athletics discipline competitions, list all athletes who have competed at these venues, and sort them by the distance from their nationality country to the country they represented in descending order, then by name alphabetically.
+
+File: q4_Athletics_venue_athletes
+
+Details: The athletes can have any discipline and can compete as a team member or an individual in these venues. The distance between two countries is calculated as the sum square of the difference between their latitudes and longitudes. Only output athletes who have valid information. (i.e., the athletes appear in the athletes table and have non-null latitudes and longitudes for both countries.) Assume that if a team participates in a competition, all team members are competing.
+
+Your output should look like this:
+ATHLETE_NAME|REPRESENTED_COUNTRY_CODE|NATIONALITY_COUNTRY_CODE
+Your first row should look like this:
+GREEN Joseph|GUM|USA
+--------------------------------------------
+-Not 100% completed-----------------------
+SELECT a.name AS AthleteName,
+       a.country_code AS CountryCode,
+       a.nationality_code AS NationalityCode
+FROM athletes a
+JOIN results r ON r.participant_code = a.code
+JOIN venues v ON v.venue = r.venue
+JOIN countries c ON a.country_code = c.code
+JOIN countries c2 ON a.nationality_code = c2.code;
+
+
